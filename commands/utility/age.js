@@ -65,7 +65,7 @@ module.exports = {
 			dateBirth = interactionUser.guild.joinedAt;
 			titleOption = 'Age In Guild';
 		} else if (interaction.options.getSubcommand() === 'guild') {
-			dateBirth = await interaction.member.guild.createdAt;
+			dateBirth = interaction.member.guild.createdAt;
 			titleOption = 'Age Guild';
 		} else if (interaction.options.getSubcommand() === 'mine') {
 			const yearDate = interaction.options.getInteger('year');
@@ -90,7 +90,7 @@ module.exports = {
 		const { years, months, weeks, days, hours, minutes } = diff.toObject();
 
 		const diffNext = nextBirthday.diff(currentDate, units);
-		const { years: yearsNext, months: monthsNext, weeks: weeksNext, days: daysNext, hours: hoursNext, minutes: minutesNext } = diffNext.toObject();
+		const { months: monthsNext, weeks: weeksNext, days: daysNext, hours: hoursNext, minutes: minutesNext } = diffNext.toObject();
 
 		const getDiff = (unit) => Math.floor(currentDate.diff(birthDate, unit).toObject()[unit]);
 		const summaries = units.reduce((obj, unit) => {
@@ -103,8 +103,10 @@ module.exports = {
 		const embedMessage = new EmbedBuilder()
 			.setTitle(titleOption)
 			.addFields(
+				{ name: 'Birthday', value: birthDate.toLocaleString(DateTime.DATE_HUGE), inline: true },
+				{ name: 'Today', value: currentDate.toLocaleString(DateTime.DATE_HUGE), inline: true },
 				{ name: 'Age', value: `${getText(years, 'year')} | ${getText(months, 'month')} | ${getText(weeks, 'week')} | ${getText(days, 'day')} | ${getText(hours, 'hour')} | ${getText(Math.floor(minutes), 'minute')}` },
-				{ name: 'Next birthday', value: `${getText(yearsNext, 'year')} | ${getText(monthsNext, 'month')} | ${getText(weeksNext, 'week')} | ${getText(daysNext, 'day')} | ${getText(hoursNext, 'hour')} | ${getText(Math.floor(minutesNext), 'minute')}` },
+				{ name: 'Next birthday', value: `${nextBirthday.toFormat('cccc')} | ${getText(monthsNext, 'month')} | ${getText(weeksNext, 'week')} | ${getText(daysNext, 'day')} | ${getText(hoursNext, 'hour')} | ${getText(Math.floor(minutesNext), 'minute')}` },
 				{ name: 'Summary', value: `${getText(summaries.years, 'year')} | ${getText(summaries.months, 'month')} | ${getText(summaries.weeks, 'week')} | ${getText(summaries.days, 'day')} | ${getText(summaries.hours, 'hour')} | ${getText(summaries.minutes, 'minute')}` },
 			)
 			.setColor('#a0919e')
