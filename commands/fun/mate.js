@@ -22,7 +22,7 @@ module.exports = {
 						.setDescription('Find mate in this role')
 						.setRequired(true))),
 	async execute(interaction) {
-		let user1, user2, userMatch;
+		let user1, user2, userMatch, selectedRole;
 
 		if (interaction.options.getSubcommand() === 'choice') {
 			user1 = interaction.options.getUser('target-1');
@@ -30,7 +30,7 @@ module.exports = {
 			userMatch = user2 ?? interaction.user;
 
 		} else if (interaction.options.getSubcommand() === 'random') {
-			const selectedRole = interaction.options.getRole('role');
+			selectedRole = interaction.options.getRole('role');
 			userMatch = interaction.user;
 
 			if (selectedRole.members.size > 1) {
@@ -66,10 +66,13 @@ module.exports = {
 			percentages[mateKeyword] = totalUnicodeSum;
 		}
 
+		const roleInfo = (selectedRole) ? `From role: ${selectedRole.toString()}\n\n` : '\n';
+
 		const embedMessage = new EmbedBuilder()
 			.setTitle('Couple Counter')
 			.setDescription(
-				`Match results between ${userMatch.toString()} and ${user1.toString()}\n\n` +
+				`Match results between ${userMatch.toString()} and ${user1.toString()}\n` +
+				`${roleInfo}` +
 				`${bold('Love: ') + percentages.Love}%  |  ${bold('Affection: ') + percentages.Affection}%\n` +
 				`${bold('Cheat: ') + percentages.Cheat}%  |  ${bold('Fight: ') + percentages.Fight}%\n` +
 				`${bold('Loyal: ') + percentages.Loyal}%  |  ${bold('Match: ') + percentages.Match}%\n` +
