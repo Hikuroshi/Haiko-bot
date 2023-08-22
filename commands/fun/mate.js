@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, EmbedBuilder, codeBlock } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder, bold } = require('discord.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -34,8 +34,13 @@ module.exports = {
 			userMatch = interaction.user;
 
 			if (selectedRole.members.size > 1) {
-				const randomMate = selectedRole.members.random();
+				let randomMate = selectedRole.members.random();
+
+				while (randomMate.user.username === userMatch.username) {
+					randomMate = selectedRole.members.random();
+				}
 				user1 = randomMate.user;
+
 			} else {
 				await interaction.reply({ embeds: [{
 					color: 0xa0919e,
@@ -63,16 +68,12 @@ module.exports = {
 
 		const embedMessage = new EmbedBuilder()
 			.setTitle('Couple Counter')
-			.setDescription(`Match results between ${userMatch.toString()} and ${user1.toString()}`)
-			.addFields(
-				{ name: 'Love', value: codeBlock(`${percentages.Love}%`), inline: true },
-				{ name: 'Affection', value: codeBlock(`${percentages.Affection}%`), inline: true },
-				{ name: 'Cheat', value: codeBlock(`${percentages.Cheat}%`), inline: true },
-				{ name: 'Fight', value: codeBlock(`${percentages.Fight}%`), inline: true },
-				{ name: 'Loyal', value: codeBlock(`${percentages.Loyal}%`), inline: true },
-				{ name: 'Match', value: codeBlock(`${percentages.Match}%`), inline: true },
-				{ name: 'Sincere', value: codeBlock(`${percentages.Sincere}%`), inline: true },
-				{ name: 'Care', value: codeBlock(`${percentages.Care}%`), inline: true },
+			.setDescription(
+				`Match results between ${userMatch.toString()} and ${user1.toString()}\n\n` +
+				`${bold('Love: ') + percentages.Love}%  |  ${bold('Affection: ') + percentages.Affection}%\n` +
+				`${bold('Cheat: ') + percentages.Cheat}%  |  ${bold('Fight: ') + percentages.Fight}%\n` +
+				`${bold('Loyal: ') + percentages.Loyal}%  |  ${bold('Match: ') + percentages.Match}%\n` +
+				`${bold('Sincere: ') + percentages.Sincere}%  |  ${bold('Care: ') + percentages.Care}%\n`,
 			)
 			.setColor('#a0919e')
 			.setFooter({

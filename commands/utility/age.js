@@ -62,7 +62,7 @@ module.exports = {
 			const user = interaction.options.getMember('target');
 			const interactionUser = user ?? interaction.member;
 
-			dateBirth = interactionUser.guild.joinedAt;
+			dateBirth = interactionUser.joinedAt;
 			titleOption = 'Age In Guild';
 		} else if (interaction.options.getSubcommand() === 'guild') {
 			dateBirth = interaction.member.guild.createdAt;
