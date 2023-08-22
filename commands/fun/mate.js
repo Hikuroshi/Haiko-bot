@@ -66,7 +66,7 @@ module.exports = {
 			percentages[mateKeyword] = totalUnicodeSum;
 		}
 
-		const roleInfo = (selectedRole) ? `From role: ${selectedRole.toString()}\n\n` : '\n';
+		const roleInfo = selectedRole ? `From role: ${selectedRole.toString()}\n\n` : '\n';
 
 		const embedMessage = new EmbedBuilder()
 			.setTitle('Couple Counter')
