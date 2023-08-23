@@ -1,13 +1,15 @@
 const fs = require('node:fs');
 const path = require('node:path');
-const { Client, Collection, GatewayIntentBits, REST, Routes } = require('discord.js');
+const { Client, Collection, GatewayIntentBits, REST, Routes, ActivityType } = require('discord.js');
 require('dotenv').config();
 const express = require('express');
-const http = require('http');
+const https = require('https');
 
 const app = express();
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+
+client.user.setActivity('activity', { name: 'Can i play songs for you?', type: ActivityType.Custom });
 
 client.commands = new Collection();
 client.cooldowns = new Collection();
@@ -95,28 +97,28 @@ const serverURL = 'https://kambenk-hikulana04.b4a.run/';
 const intervalInMilliseconds = 29 * 60 * 1000;
 
 const sendRequest = async () => {
-    const options = {
-        method: 'GET',
-        headers: {
-            'User-Agent': 'Node.js'
-        }
-    };
+	const options = {
+		method: 'GET',
+		headers: {
+			'User-Agent': 'Node.js'
+		}
+	};
 
-    try {
-        const res = await new Promise((resolve, reject) => {
-            const req = http.request(serverURL, options, resolve);
-            req.on('error', reject);
-            req.end();
-        });
+	try {
+		const res = await new Promise((resolve, reject) => {
+			const req = https.request(serverURL, options, resolve);
+			req.on('error', reject);
+			req.end();
+		});
 
-        if (res.statusCode === 200) {
-            console.log('Server is up and running.');
-        } else {
-            console.log('Server returned a non-OK status:', res.statusCode);
-        }
-    } catch (error) {
-        console.error('Error occurred while accessing the server:', error.message);
-    }
+		if (res.statusCode === 200) {
+			console.log('Server is up and running.');
+		} else {
+			console.log('Server returned a non-OK status:', res.statusCode);
+		}
+	} catch (error) {
+		console.error('Error occurred while accessing the server:', error.message);
+	}
 };
 
 setInterval(sendRequest, intervalInMilliseconds);
