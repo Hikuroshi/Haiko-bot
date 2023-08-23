@@ -86,16 +86,12 @@ app.get('/register_commands', async (req, res) => {
 	})();
 });
 
-app.get('/start-login', async (req, res) => {
-	client.login(process.env.TOKEN);
-	return res.send('Haiko ready!');
-});
-
 app.get('/', async (req, res) => {
 	return res.send('Haiko desu');
 });
 
-
 app.listen(3000, () => {
 	console.log(`Express server is running on port ${3000}`);
 });
+
+client.login(process.env.TOKEN);
