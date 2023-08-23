@@ -51,22 +51,28 @@ module.exports = {
 						.setMaxValue(31)
 						.setRequired(true))),
 	async execute(interaction) {
-		let dateBirth, titleOption;
+		let dateBirth, titleOption, ageInfo;
 		if (interaction.options.getSubcommand() === 'account') {
 			const user = interaction.options.getUser('target');
 			const interactionUser = user ?? interaction.user;
 
 			dateBirth = interactionUser.createdAt;
 			titleOption = 'Age Account';
+			ageInfo = `${interactionUser.toString()} account age is`;
+
 		} else if (interaction.options.getSubcommand() === 'in-guild') {
 			const user = interaction.options.getMember('target');
 			const interactionUser = user ?? interaction.member;
 
 			dateBirth = interactionUser.joinedAt;
 			titleOption = 'Age In Guild';
+			ageInfo = `${interactionUser.toString()} age in the guild is`;
+
 		} else if (interaction.options.getSubcommand() === 'guild') {
 			dateBirth = interaction.member.guild.createdAt;
 			titleOption = 'Age Guild';
+			ageInfo = `${interaction.member.guild.name} age is`;
+
 		} else if (interaction.options.getSubcommand() === 'mine') {
 			const yearDate = interaction.options.getInteger('year');
 			const monthDate = interaction.options.getInteger('month');
@@ -74,6 +80,7 @@ module.exports = {
 
 			dateBirth = DateTime.local(yearDate, monthDate, dayDate).toJSDate();
 			titleOption = 'Your Age';
+			ageInfo = `${interaction.user.toString()} age is`;
 		}
 
 		const birthDate = DateTime.fromJSDate(dateBirth);
@@ -102,6 +109,7 @@ module.exports = {
 
 		const embedMessage = new EmbedBuilder()
 			.setTitle(titleOption)
+			.setDescription(ageInfo)
 			.addFields(
 				{ name: 'Birthday', value: birthDate.toLocaleString(DateTime.DATE_HUGE), inline: true },
 				{ name: 'Today', value: currentDate.toLocaleString(DateTime.DATE_HUGE), inline: true },

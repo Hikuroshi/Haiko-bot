@@ -1,6 +1,6 @@
 const fs = require('node:fs');
 const path = require('node:path');
-const { Client, Collection, GatewayIntentBits, REST, Routes, ActivityType } = require('discord.js');
+const { Client, Collection, GatewayIntentBits, REST, Routes } = require('discord.js');
 require('dotenv').config();
 const express = require('express');
 const https = require('https');
@@ -8,8 +8,6 @@ const https = require('https');
 const app = express();
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
-
-client.user.setActivity('activity', { name: 'Can i play songs for you?', type: ActivityType.Custom });
 
 client.commands = new Collection();
 client.cooldowns = new Collection();
@@ -100,8 +98,8 @@ const sendRequest = async () => {
 	const options = {
 		method: 'GET',
 		headers: {
-			'User-Agent': 'Node.js'
-		}
+			'User-Agent': 'Node.js',
+		},
 	};
 
 	try {
