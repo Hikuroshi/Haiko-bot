@@ -90,8 +90,8 @@ app.get('/', async (req, res) => {
 	return res.send('Haiko desu');
 });
 
-client.login(process.env.TOKEN);
 
 app.listen(3000, () => {
+	client.login(process.env.TOKEN);
 	console.log(`Express server is running on port ${3000}`);
 });
