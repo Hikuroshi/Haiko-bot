@@ -43,6 +43,8 @@ for (const file of eventFiles) {
 	}
 }
 
+client.login(process.env.TOKEN);
+
 app.get('/register_commands', async (req, res) => {
 	const commands = [];
 
@@ -93,5 +95,3 @@ app.get('/', async (req, res) => {
 app.listen(3000, () => {
 	console.log(`Express server is running on port ${3000}`);
 });
-
-client.login(process.env.TOKEN);
