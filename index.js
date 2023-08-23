@@ -3,6 +3,7 @@ const path = require('node:path');
 const { Client, Collection, GatewayIntentBits, REST, Routes } = require('discord.js');
 require('dotenv').config();
 const express = require('express');
+const http = require('http');
 
 const app = express();
 
@@ -89,6 +90,36 @@ app.get('/register_commands', async (req, res) => {
 app.get('/', async (req, res) => {
 	return res.send('Haiko desu');
 });
+
+const serverURL = 'https://kambenk-hikulana04.b4a.run/';
+const intervalInMilliseconds = 29 * 60 * 1000;
+
+const sendRequest = async () => {
+    const options = {
+        method: 'GET',
+        headers: {
+            'User-Agent': 'Node.js'
+        }
+    };
+
+    try {
+        const res = await new Promise((resolve, reject) => {
+            const req = http.request(serverURL, options, resolve);
+            req.on('error', reject);
+            req.end();
+        });
+
+        if (res.statusCode === 200) {
+            console.log('Server is up and running.');
+        } else {
+            console.log('Server returned a non-OK status:', res.statusCode);
+        }
+    } catch (error) {
+        console.error('Error occurred while accessing the server:', error.message);
+    }
+};
+
+setInterval(sendRequest, intervalInMilliseconds);
 
 client.login(process.env.TOKEN);
 
