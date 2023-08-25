@@ -22,6 +22,8 @@ module.exports = {
 						.setDescription('Find mate in this role')
 						.setRequired(true))),
 	async execute(interaction) {
+		await interaction.deferReply();
+
 		let user1, user2, userMatch, selectedRole;
 
 		if (interaction.options.getSubcommand() === 'choice') {
@@ -32,19 +34,20 @@ module.exports = {
 		} else if (interaction.options.getSubcommand() === 'random') {
 			selectedRole = interaction.options.getRole('role');
 			userMatch = interaction.user;
+			const roleMember = await selectedRole.members;
 
-			if (selectedRole.members.size > 1) {
-				let randomMate = selectedRole.members.random();
+			if (roleMember.size > 1) {
+				let randomMate = roleMember.random();
 
 				while (randomMate.user.username === userMatch.username) {
-					randomMate = selectedRole.members.random();
+					randomMate = roleMember.random();
 				}
 				user1 = randomMate.user;
 
 			} else {
 				await interaction.reply({ embeds: [{
 					color: 0xa0919e,
-					description: `Nothing user in ${selectedRole.toString()}`,
+					description: `Users less than 2 member in ${selectedRole.toString()}`,
 				}] });
 				return;
 			}
@@ -84,6 +87,6 @@ module.exports = {
 				iconURL: interaction.user.displayAvatarURL(),
 			});
 
-		await interaction.reply({ embeds: [embedMessage] });
+		await interaction.editReply({ embeds: [embedMessage] });
 	},
 };
