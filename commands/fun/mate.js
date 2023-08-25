@@ -34,20 +34,20 @@ module.exports = {
 		} else if (interaction.options.getSubcommand() === 'random') {
 			selectedRole = interaction.options.getRole('role');
 			userMatch = interaction.user;
-			const roleMember = await selectedRole.members;
+			const membersInRole = await selectedRole.members;
 
-			if (roleMember.size > 1) {
-				let randomMate = roleMember.random();
+			if (membersInRole.size > 1) {
+				let randomMate = membersInRole.random();
 
 				while (randomMate.user.username === userMatch.username) {
-					randomMate = roleMember.random();
+					randomMate = membersInRole.random();
 				}
 				user1 = randomMate.user;
 
 			} else {
 				await interaction.reply({ embeds: [{
 					color: 0xa0919e,
-					description: `Users less than 2 member in ${selectedRole.toString()}`,
+					description: `The users less than 2 member in ${selectedRole.toString()}`,
 				}] });
 				return;
 			}

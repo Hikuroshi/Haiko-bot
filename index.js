@@ -7,7 +7,12 @@ const https = require('https');
 
 const app = express();
 
-const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+const client = new Client({
+	intents: [
+		GatewayIntentBits.Guilds,
+		GatewayIntentBits.GuildPresences,
+	],
+});
 
 client.commands = new Collection();
 client.cooldowns = new Collection();
